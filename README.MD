@@ -1,7 +1,6 @@
 # puppeteer爬虫
-    这是一个爬取漫画的项目，使用puppeteer
 
-
+这是一个爬取漫画的项目，使用puppeteer
 运行此项目需要nodejs环境，进入目录执行命令：
 
 
