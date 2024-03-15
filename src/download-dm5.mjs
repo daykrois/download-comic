@@ -1,13 +1,9 @@
 import puppeteer from 'puppeteer-core';
-import path from 'path'
-import fs from 'fs'
+import createDirectoryIfNotExists from './directoryUtils.mjs';
 
-const downloadPath = "../downloads/火凤燎原/";
+const directoryPath = '../downloads/火凤燎原/'; 
+createDirectoryIfNotExists(directoryPath);
 
-function checkAndCreateDirectory(path) {
-    if (!fs.existsSync(path))
-        fs.mkdirSync(path)
-}
 
 const css = `
 .rightToolBar{
@@ -19,16 +15,14 @@ const css = `
 `;
 
 (async () => {
-    //创建目录
-    checkAndCreateDirectory(downloadPath);
     const browser = await puppeteer.launch({
         executablePath: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
         headless: false // 设置为 true 以在无头模式下运行
     });
     const page = await browser.newPage();
-    let pageNum = 193;
+    let pageNum = 192;
     while (true) {
-        await page.goto('https://tel.dm5.com/m5338-p' + pageNum, { waitUntil: 'networkidle0' });
+        await page.goto('https://tel.dm5.com/m5338-p' + pageNum, { waitUntil: 'networkidle2' });
         try {
             const element = await page.$('span.active.right-arrow');
             if (!element) {
@@ -36,8 +30,9 @@ const css = `
                 break; // 退出循环
             }
             const textContent = await page.evaluate('el => el.textContent.trim()', element);
+            console.log(textContent)
             let ImgName = textContent + '-' + pageNum;
-            await getImg(page, css, downloadPath, ImgName);
+            // await getImg(page, css, downloadPath, ImgName);
             pageNum += 1;
 
         } catch (error) {
